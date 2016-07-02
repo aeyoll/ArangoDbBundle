@@ -6,6 +6,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use triagens\ArangoDb\Connection;
 use triagens\ArangoDb\GraphHandler;
 use triagens\ArangoDb\EdgeHandler;
+use triagens\ArangoDb\Graph;
+use triagens\ArangoDb\EdgeDefinition;
 
 class Manager
 {
@@ -88,5 +90,21 @@ class Manager
         }
 
         return $this->edgeHandler;
+    }
+
+    /**
+     * Creates a new graph
+     *
+     * @param string $key
+     * @param string $from
+     * @param string $to
+     */
+    public function createGraph($key, $from, $to)
+    {
+        $graph = new Graph();
+        $graph->set('_key', $key);
+        $graph->addEdgeDefinition(new EdgeDefinition($key, $from, $to));
+
+        $graphHandler->createGraph($graph);
     }
 }
