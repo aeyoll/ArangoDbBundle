@@ -1,0 +1,13 @@
+{
+    "name": "aeyoll/arango-db-bundle",
+    "require": {
+        "triagens/arangodb": "^3.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jean-Philippe Bidegain",
+            "email": "jp@bidega.in"
+        }
+    ]
+}

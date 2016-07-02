@@ -1,0 +1,4 @@
+services:
+#    aeyoll_arango_db.example:
+#        class: Aeyoll\ArangoDbBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]
