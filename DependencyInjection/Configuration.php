@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeyoll\ArangoDbBundle\DependencyInjection;
+namespace Aeyoll\Bundle\ArangoDbBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

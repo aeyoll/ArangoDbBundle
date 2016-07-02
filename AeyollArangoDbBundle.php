@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeyoll\ArangoDbBundle;
+namespace Aeyoll\Bundle\ArangoDbBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

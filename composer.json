@@ -4,6 +4,11 @@
         "triagens/arangodb": "^3.0"
     },
     "license": "MIT",
+    "autoload" : {
+        "psr-4" : {
+            "Aeyoll\\Bundle\\ArangoDbBundle" : ""
+        }
+    },
     "authors": [
         {
             "name": "Jean-Philippe Bidegain",
