@@ -6,7 +6,7 @@
     "license": "MIT",
     "autoload" : {
         "psr-4" : {
-            "Aeyoll\\Bundle\\ArangoDbBundle" : ""
+            "Aeyoll\\Bundle\\ArangoDbBundle\\" : ""
         }
     },
     "authors": [
