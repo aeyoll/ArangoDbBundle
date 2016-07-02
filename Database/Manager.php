@@ -99,12 +99,12 @@ class Manager
      * @param string $from
      * @param string $to
      */
-    public function createGraph($key, $from, $to)
+    public function createGraph(string $key, string $from, string $to)
     {
         $graph = new Graph();
         $graph->set('_key', $key);
         $graph->addEdgeDefinition(new EdgeDefinition($key, $from, $to));
 
-        $graphHandler->createGraph($graph);
+        $this->getGraphHandler()->createGraph($graph);
     }
 }
