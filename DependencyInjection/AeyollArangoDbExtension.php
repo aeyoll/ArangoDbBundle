@@ -24,5 +24,21 @@ class AeyollArangoDbExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+
+        $container->setParameter('aeyoll_arango_db.default_connection', $config['default_connection']);
+
+        foreach ($config['connections'] as $name => $connectionAttributes) {
+            foreach ($connectionAttributes as $connectionAttributeName => $connectionAttribute) {
+                $container->setParameter('aeyoll_arango_db.connection.' . $name . '.' . $connectionAttributeName, $connectionAttribute);
+            }
+        }
+
+        foreach ($config['options'] as $optionName => $option) {
+            $container->setParameter('aeyoll_arango_db.options.' .$optionName, $option);
+        }
+
+        $this->addClassesToCompile(array(
+            'Aeyoll\Bundle\ArangoDbBundle\Database\Manager'
+        ));
     }
 }

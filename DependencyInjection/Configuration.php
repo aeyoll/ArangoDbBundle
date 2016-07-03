@@ -22,23 +22,24 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('aeyoll_arango_db');
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('default_connection')->defaultNull()->end()
-                ->arrayNode('connection')
+                ->scalarNode('default_connection')->defaultValue('default')->end()
+                ->arrayNode('connections')
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('database')->defaultValue('_system')->end()
                             ->scalarNode('endpoint')->defaultValue('tcp://127.0.0.1:8529')->end()
                             ->scalarNode('auth_user')->end()
-                            ->scalarNode('auth_passwd')->end()
+                            ->scalarNode('auth_password')->end()
                             ->scalarNode('auth_type')->defaultValue('Basic')->end()
                         ->end()
                     ->end()
                 ->end()
 
                 ->arrayNode('options')
-                    ->prototype('array')
+                    ->addDefaultsIfNotSet()
                         ->children()
                             ->scalarNode('connection')->defaultValue('Keep-Alive')->end()
                             ->integerNode('timeout')->defaultValue(30)->end()

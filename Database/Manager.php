@@ -9,6 +9,7 @@ use triagens\ArangoDb\EdgeHandler;
 use triagens\ArangoDb\Graph;
 use triagens\ArangoDb\EdgeDefinition;
 use triagens\ArangoDb\Statement;
+use triagens\ArangoDb\ConnectionOptions;
 
 class Manager
 {
@@ -57,6 +58,27 @@ class Manager
         }
 
         return $this->connection;
+    }
+
+    /**
+     * Return the connection options
+     *
+     * @return array
+     */
+    public function getConnectionOptions()
+    {
+        return array(
+            ConnectionOptions::OPTION_DATABASE      => $this->container->getParameter('aeyoll_arango_db.connection.' . $this->container->getParameter('aeyoll_arango_db.default_connection') . '.database'),
+            ConnectionOptions::OPTION_ENDPOINT      => $this->container->getParameter('aeyoll_arango_db.connection.' . $this->container->getParameter('aeyoll_arango_db.default_connection') . '.endpoint'),
+            ConnectionOptions::OPTION_AUTH_TYPE     => $this->container->getParameter('aeyoll_arango_db.connection.' . $this->container->getParameter('aeyoll_arango_db.default_connection') . '.auth_type'),
+            ConnectionOptions::OPTION_AUTH_USER     => $this->container->getParameter('aeyoll_arango_db.connection.' . $this->container->getParameter('aeyoll_arango_db.default_connection') . '.auth_user'),
+            ConnectionOptions::OPTION_AUTH_PASSWD   => $this->container->getParameter('aeyoll_arango_db.connection.' . $this->container->getParameter('aeyoll_arango_db.default_connection') . '.auth_password'),
+            ConnectionOptions::OPTION_CONNECTION    => $this->container->getParameter('aeyoll_arango_db.options.connection'),
+            ConnectionOptions::OPTION_TIMEOUT       => $this->container->getParameter('aeyoll_arango_db.options.timeout'),
+            ConnectionOptions::OPTION_RECONNECT     => $this->container->getParameter('aeyoll_arango_db.options.reconnect'),
+            ConnectionOptions::OPTION_CREATE        => $this->container->getParameter('aeyoll_arango_db.options.create'),
+            ConnectionOptions::OPTION_UPDATE_POLICY => $this->container->getParameter('aeyoll_arango_db.options.update_policy'),
+        );
     }
 
     /**
