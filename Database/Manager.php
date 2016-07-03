@@ -126,11 +126,15 @@ class Manager
      */
     public function createGraph(string $key, string $from, string $to)
     {
-        $graph = new Graph();
-        $graph->set('_key', $key);
-        $graph->addEdgeDefinition(new EdgeDefinition($key, $from, $to));
+        $graph = $this->getGraphHandler()->getGraph($key);
 
-        $this->getGraphHandler()->createGraph($graph);
+        if ($graph === false) {
+            $graph = new Graph();
+            $graph->set('_key', $key);
+            $graph->addEdgeDefinition(new EdgeDefinition($key, $from, $to));
+
+            $this->getGraphHandler()->createGraph($graph);
+        }
 
         return $graph;
     }
