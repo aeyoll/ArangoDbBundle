@@ -95,9 +95,11 @@ class Manager
     /**
      * Creates a new graph
      *
-     * @param string $key
-     * @param string $from
-     * @param string $to
+     * @param  string $key
+     * @param  string $from
+     * @param  string $to
+     *
+     * @return triagens\ArangoDb\Graph
      */
     public function createGraph(string $key, string $from, string $to)
     {
@@ -106,5 +108,51 @@ class Manager
         $graph->addEdgeDefinition(new EdgeDefinition($key, $from, $to));
 
         $this->getGraphHandler()->createGraph($graph);
+
+        return $graph;
+    }
+
+    /**
+     * Create a new Vertex
+     *
+     * @param  string $key
+     * @param  array  $attributes
+     *
+     * @return triagens\ArangoDb\Vertex
+     */
+    public function createVertex(string $key, array $attributes)
+    {
+        return Vertex::createFromArray(array_merge(array('_key' => $key), $attributes));
+    }
+
+    /**
+     * Attach a vertex to a graph
+     *
+     * @param  mixed    $graph          Graph name as a string or instance of Graph
+     * @param  mixed    $document       Vertex to be added, can be passed as a vertex object or an array
+     * @param  string   $collection     Collection name to store the vertex
+     *
+     * @return string                   Created vertex id
+     */
+    public function attachVertexToGraph($graph, $document, string $collection)
+    {
+        return $this->getGraphHandler()->saveVertex($graph, $document, $collection);
+    }
+
+    /**
+     * Connect two documents in a Graph
+     *
+     * @param  mixed $graph             Graph name as a string or instance of Graph
+     * @param  mixed $from              "From" vertex
+     * @param  mixed $to                "To" vertex
+     * @param  array $edgeAttributes    Extra attributes to be added in the edge
+     *
+     * @return string                   Created document id
+     */
+    public function connectVertices($graph, $from, $to, array $edgeAttributes = array())
+    {
+        $edge = Edge::createFromArray($edgeAttributes);
+
+        return $edgeHandler->saveEdge($graph, $from->getHandle(), $to->getHandle(), $edge);
     }
 }
