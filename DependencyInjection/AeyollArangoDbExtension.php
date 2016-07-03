@@ -14,6 +14,8 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class AeyollArangoDbExtension extends Extension
 {
+    const PREFIX = 'aeyoll_arango_db';
+
     /**
      * {@inheritdoc}
      */
@@ -25,20 +27,55 @@ class AeyollArangoDbExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $container->setParameter('aeyoll_arango_db.default_connection', $config['default_connection']);
-
-        foreach ($config['connections'] as $name => $connectionAttributes) {
-            foreach ($connectionAttributes as $connectionAttributeName => $connectionAttribute) {
-                $container->setParameter('aeyoll_arango_db.connection.' . $name . '.' . $connectionAttributeName, $connectionAttribute);
-            }
-        }
-
-        foreach ($config['options'] as $optionName => $option) {
-            $container->setParameter('aeyoll_arango_db.options.' .$optionName, $option);
-        }
+        $this->setDatabaseConfiguration($container, $config);
+        $this->setDatabaseOptions($container, $config);
 
         $this->addClassesToCompile(array(
             'Aeyoll\Bundle\ArangoDbBundle\Database\Manager'
         ));
+    }
+
+    /**
+     * Define the database configuration
+     *
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    private function setDatabaseConfiguration(ContainerBuilder $container, array $config)
+    {
+        $container->setParameter(self::PREFIX . '.default_connection', $config['default_connection']);
+
+        foreach ($config['connections'] as $name => $connectionAttributes) {
+            foreach ($connectionAttributes as $connectionAttributeName => $connectionAttribute) {
+                $key = $this->getConnectionParameterKey($name, $connectionAttributeName);
+                $container->setParameter($key, $connectionAttribute);
+            }
+        }
+    }
+
+    /**
+     * Set the database options
+     *
+     * @param ContainerBuilder $container
+     * @param array            $config
+     */
+    private function setDatabaseOptions(ContainerBuilder $container, array $config)
+    {
+        foreach ($config['options'] as $optionName => $option) {
+            $container->setParameter(self::PREFIX . '.options.' .$optionName, $option);
+        }
+    }
+
+    /**
+     * Get the key of a connection parameter
+     *
+     * @param  string $connectionName
+     * @param  string $connectionAttributeName
+     *
+     * @return string
+     */
+    private function getConnectionParameterKey($connectionName, $connectionAttributeName)
+    {
+        return self::PREFIX . '.connection.' . $connectionName . '.' . $connectionAttributeName;
     }
 }
