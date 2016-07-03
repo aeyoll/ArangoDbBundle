@@ -8,6 +8,7 @@ use triagens\ArangoDb\GraphHandler;
 use triagens\ArangoDb\EdgeHandler;
 use triagens\ArangoDb\Graph;
 use triagens\ArangoDb\EdgeDefinition;
+use triagens\ArangoDb\Statement;
 
 class Manager
 {
@@ -153,6 +154,41 @@ class Manager
     {
         $edge = Edge::createFromArray($edgeAttributes);
 
-        return $edgeHandler->saveEdge($graph, $from->getHandle(), $to->getHandle(), $edge);
+        return $this
+            ->edgeHandler
+            ->saveEdge(
+                $graph,
+                $from->getHandle(),
+                $to->getHandle(),
+                $edge
+            );
+    }
+
+    /**
+     * Get the cursor of a query
+     *
+     * @param  string $query
+     * @param  array  $vars
+     */
+    public function getCursor(string $query, array $vars = [])
+    {
+        $statement = new Statement($this->getConnection(), array(
+            'query'    => $query,
+            'bindVars' => $vars
+        ));
+
+        $cursor = $statement->execute();
+
+        return $cursor;
+    }
+
+    public function getResults($cursor)
+    {
+        return $cursor->getAll();
+    }
+
+    public function getStatistics($cursor)
+    {
+        return $cursor->getExtra();
     }
 }

@@ -1,4 +1,9 @@
+parameters:
+    aeyoll_arango_db.database.manager.class: "Aeyoll\\Bundle\\ArangoDbBundle\\Database\\Manager"
+
 services:
-#    aeyoll_arango_db.example:
-#        class: Aeyoll\ArangoDbBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    aeyoll_arango_db.database.manager:
+        class: %aeyoll_arango_db.database.manager.class%
+        arguments: ["@service_container"]
+    arango_db:
+        alias: aeyoll_arango_db.database.manager
